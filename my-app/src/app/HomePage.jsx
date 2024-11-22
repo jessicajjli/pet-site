@@ -1,9 +1,32 @@
 'use client';
 import React, { useState } from 'react';
 import './HomePage.css';
+import Card from './components/Card';
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState('tab1');
+  const petCards = [
+    {
+      id: 1,
+      name: 'Fluffy',
+      image: '/images/fluffy.jpg',
+      hearts: 120,
+      happiness: 80,
+      food: 50,
+      money: 300,
+      acquiredDate: '2023-12-01',
+    },
+    {
+      id: 2,
+      name: 'Buddy',
+      image: '/images/buddy.jpg',
+      hearts: 200,
+      happiness: 95,
+      food: 70,
+      money: 500,
+      acquiredDate: '2023-11-20',
+    },
+  ];
 
   return (
     <div className="homepage">
@@ -34,9 +57,10 @@ const HomePage = () => {
                 className="tab-search-bar"
               />
               {activeTab === 'tab1' && (
-                <div>
-                  <h2>My Pets</h2>
-                  <p>pet cards will be here</p>
+                <div className="pet-cards-container">
+                  {petCards.map((pet) => (
+                    <Card key={pet.id} pet={pet} />
+                  ))}
                 </div>
               )}
               {activeTab === 'tab2' && (
