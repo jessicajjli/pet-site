@@ -9,7 +9,7 @@ const HomePage = () => {
     {
       id: 1,
       name: 'Fluffy',
-      image: '/images/fluffy.jpg',
+      image: './images/1.png',
       hearts: 120,
       happiness: 80,
       food: 50,
@@ -19,7 +19,7 @@ const HomePage = () => {
     {
       id: 2,
       name: 'Buddy',
-      image: '/images/buddy.jpg',
+      image: './images/2.png',
       hearts: 200,
       happiness: 95,
       food: 70,
