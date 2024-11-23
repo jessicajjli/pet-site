@@ -83,6 +83,7 @@ body {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
+    color: black;
   }
   
   .tab-header button {
