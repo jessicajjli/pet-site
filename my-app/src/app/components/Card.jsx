@@ -15,7 +15,7 @@ const Card = ({ pet }) => {
         </div>
       </div>
       <div className="pet-card-bottom">
-        <p>💰 Money: {pet.money}</p>
+        <button>💰 Sell For: {pet.money}</button>
         <p>Acquired: {pet.acquiredDate}</p>
       </div>
     </div>
