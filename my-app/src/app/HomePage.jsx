@@ -28,6 +28,12 @@ const HomePage = () => {
   const [money, setMoney] = useState(10000); // starting money (we can change this I made it up)
   const [level, setLevel] = useState(1); // users start from level 1
 
+  const [search, setSearch] = useState('');
+  function regexstr(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+
   // Initialize the my pets state --> this will be connected to local storage
   const [myPets, setMyPets] = useState([
     {
@@ -203,31 +209,43 @@ const HomePage = () => {
               </button>
             </div>
             <div className="tab-content">
-              <input
-                type="text"
-                placeholder="Search for a pet..."
-                className="tab-search-bar"
-              />
+            <input
+              type="text"
+              placeholder="Search for a pet..."
+              className="tab-search-bar"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
               {activeTab === 'tab1' && (
                 <div className="pet-cards-container">
-                  {myPets.map((pet) => (
-                    <Card
-                      key={pet.id}
-                      pet={pet}
-                      onClick={() => setSelectedPet(pet)}
-                    />
-                  ))}
+                  {myPets
+                    .filter((pet) => {
+                      const regex = new RegExp(regexstr(search), 'i');
+                      return regex.test(pet.name);
+                    })
+                    .map((pet) => (
+                      <Card
+                        key={pet.id}
+                        pet={pet}
+                        onClick={() => setSelectedPet(pet)}
+                      />
+                    ))}
                 </div>
               )}
               {activeTab === 'tab2' && (
                 <div className="pet-cards-container">
-                  {shopPets.map((pet) => (
-                    <PetShopCard
-                      key={pet.id}
-                      pet={pet}
-                      onBuy={handleBuyPet}
-                    />
-                  ))}
+                  {shopPets
+                    .filter((pet) => {
+                      const regex = new RegExp(regexstr(search), 'i');
+                      return regex.test(pet.name);
+                    })
+                    .map((pet) => (
+                      <PetShopCard
+                        key={pet.id}
+                        pet={pet}
+                        onBuy={handleBuyPet}
+                      />
+                    ))}
                 </div>
               )}
             </div>
