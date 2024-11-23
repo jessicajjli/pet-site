@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './HomePage.css';
 import Card from './components/Card';
 import PetShopCard from './components/PetShopCard';
+import Popup from './components/Popup';
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState('tab1');
@@ -19,7 +20,9 @@ const HomePage = () => {
     //     window.location.reload();
     //   };
     // };
-  
+
+  // State for the selected pet (for the popup)
+  const [selectedPet, setSelectedPet] = useState(null);
 
   // Initialize the my pets state --> this will be connected to local storage
   const [myPets, setMyPets] = useState([
@@ -104,15 +107,32 @@ const HomePage = () => {
     setShopPets(shopPets.filter((shopPet) => shopPet.id !== pet.id));
   };
 
+  // Function to update pet stats
+  const handleUpdatePet = (updatedPet) => {
+    setMyPets(
+      myPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+    );
+  };
+
+  // Function to handle collect action
+  const handleCollect = (pet) => {
+    // For example, increase money based on some logic
+    const earnedMoney = 50; // Adjust as needed
+    const updatedPet = {
+      ...pet,
+      money: pet.money + earnedMoney,
+    };
+    setMyPets(
+      myPets.map((p) => (p.id === updatedPet.id ? updatedPet : p))
+    );
+  };
+
   return (
     <div className="homepage">
       <header className="header">
         <h1>Pet World</h1>
-
         {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES
-        <button onClick={handleClear}>
-      Clear Local Storage
-  </button> */}
+        <button onClick={handleClear}>Clear Local Storage</button> */}
       </header>
       <main className="main-content">
         <section className="main-section">
@@ -140,14 +160,22 @@ const HomePage = () => {
               {activeTab === 'tab1' && (
                 <div className="pet-cards-container">
                   {myPets.map((pet) => (
-                    <Card key={pet.id} pet={pet} />
+                    <Card
+                      key={pet.id}
+                      pet={pet}
+                      onClick={() => setSelectedPet(pet)}
+                    />
                   ))}
                 </div>
               )}
               {activeTab === 'tab2' && (
                 <div className="pet-cards-container">
                   {shopPets.map((pet) => (
-                    <PetShopCard key={pet.id} pet={pet} onBuy={handleBuyPet} />
+                    <PetShopCard
+                      key={pet.id}
+                      pet={pet}
+                      onBuy={handleBuyPet}
+                    />
                   ))}
                 </div>
               )}
@@ -158,6 +186,18 @@ const HomePage = () => {
       <footer className="footer">
         <p>© 2024 Pet World. All rights reserved.</p>
       </footer>
+      {/* Popup Component */}
+      {selectedPet && (
+        <Popup
+          pet={selectedPet}
+          onClose={() => setSelectedPet(null)}
+          onUpdatePet={handleUpdatePet}
+          onCollect={(pet) => {
+            handleCollect(pet);
+            handleUpdatePet(pet);
+          }}
+        />
+      )}
     </div>
   );
 };

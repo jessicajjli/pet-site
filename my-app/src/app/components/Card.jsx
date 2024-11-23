@@ -2,9 +2,9 @@
 import React from 'react';
 import './styles/Card.css';
 
-const Card = ({ pet }) => {
+const Card = ({ pet, onClick }) => {
   return (
-    <div className="pet-card">
+    <div className="pet-card" onClick={onClick}>
       <div className="pet-card-top">
         <img src={pet.image} alt={pet.name} className="pet-image" />
         <div className="pet-info">
