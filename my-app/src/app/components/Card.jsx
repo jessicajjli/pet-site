@@ -15,7 +15,7 @@ const Card = ({ pet, onClick }) => {
         </div>
       </div>
       <div className="pet-card-bottom">
-        <button>💰 Collect: {pet.money}</button>
+        <button className='collect-button'>💰 Collect: {pet.money}</button>
         <p>Acquired: {pet.acquiredDate}</p>
       </div>
     </div>

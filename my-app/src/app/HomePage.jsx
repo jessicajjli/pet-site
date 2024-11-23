@@ -24,6 +24,10 @@ const HomePage = () => {
   // State for the selected pet (for the popup)
   const [selectedPet, setSelectedPet] = useState(null);
 
+  // Initialize money and level, will be connected to local storage
+  const [money, setMoney] = useState(10000); // starting money (we can change this I made it up)
+  const [level, setLevel] = useState(1); // users start from level 1
+
   // Initialize the my pets state --> this will be connected to local storage
   const [myPets, setMyPets] = useState([
     {
@@ -66,6 +70,8 @@ const HomePage = () => {
     if (typeof window !== 'undefined') {
       const storedMyPets = localStorage.getItem('myPets');
       const storedShopPets = localStorage.getItem('shopPets');
+      const storedMoney = localStorage.getItem('money');
+      const storedLevel = localStorage.getItem('level');
 
       if (storedMyPets) {
         setMyPets(JSON.parse(storedMyPets));
@@ -73,10 +79,16 @@ const HomePage = () => {
       if (storedShopPets) {
         setShopPets(JSON.parse(storedShopPets));
       }
+      if (storedMoney) {
+        setMoney(parseInt(storedMoney, 10));
+      }
+      if (storedLevel) {
+        setLevel(parseInt(storedLevel, 10));
+      }
     }
   }, []);
 
-  // Update local storage when my pets changes
+  // Update local storage when my pets change
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('myPets', JSON.stringify(myPets));
@@ -90,21 +102,43 @@ const HomePage = () => {
     }
   }, [shopPets]);
 
+  // Update local storage when money changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('money', money.toString());
+    }
+  }, [money]);
+
+  // Update local storage when level changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('level', level.toString());
+    }
+  }, [level]);
+
   // Function to buy a pet
   const handleBuyPet = (pet) => {
-    // Add the pet to my pets list
-    const newPet = {
-      ...pet,
-      hearts: 100,
-      happiness: 100,
-      food: 100,
-      money: 0,
-      acquiredDate: new Date().toISOString().split('T')[0],
-    };
-    setMyPets([...myPets, newPet]);
+    // Deduct pet cost from money
+    const petCost = 500; // we need to change this 500 to a dynamic number
+    if (money >= petCost) {
+      setMoney(money - petCost);
 
-    // Removing the pet from the shop
-    setShopPets(shopPets.filter((shopPet) => shopPet.id !== pet.id));
+      // Add the pet to my pets list
+      const newPet = {
+        ...pet,
+        hearts: 100,
+        happiness: 100,
+        food: 100,
+        money: 0,
+        acquiredDate: new Date().toISOString().split('T')[0],
+      };
+      setMyPets([...myPets, newPet]);
+
+      // Removing the pet from the shop
+      setShopPets(shopPets.filter((shopPet) => shopPet.id !== pet.id));
+    } else {
+      alert('Not enough money to buy this pet.');
+    }
   };
 
   // Function to update pet stats
@@ -116,8 +150,8 @@ const HomePage = () => {
 
   // Function to handle collect action
   const handleCollect = (pet) => {
-    // For example, increase money based on some logic
-    const earnedMoney = 50; // Adjust as needed
+    // Increase money 
+    const earnedMoney = 50; // We need to change this I made this number up
     const updatedPet = {
       ...pet,
       money: pet.money + earnedMoney,
@@ -125,12 +159,29 @@ const HomePage = () => {
     setMyPets(
       myPets.map((p) => (p.id === updatedPet.id ? updatedPet : p))
     );
+
+    // Update money
+    setMoney(money + earnedMoney);
+
+    // Update level based on money or other criteria
+    const newLevel = Math.floor((money + earnedMoney) / 1000) + 1;
+    if (newLevel !== level) {
+      setLevel(newLevel);
+    }
   };
 
   return (
     <div className="homepage">
       <header className="header">
-        <h1>Pet World</h1>
+        <div className="header-left">
+          <p>Level:</p>
+          <p>{level}</p>
+        </div>
+        <h1 className="header-title">Pet World</h1>
+        <div className="header-right">
+          <p>Money:</p>
+          <p>{money}</p>
+        </div>
         {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES
         <button onClick={handleClear}>Clear Local Storage</button> */}
       </header>
@@ -186,7 +237,6 @@ const HomePage = () => {
       <footer className="footer">
         <p>© 2024 Pet World. All rights reserved.</p>
       </footer>
-      {/* Popup Component */}
       {selectedPet && (
         <Popup
           pet={selectedPet}
