@@ -1,16 +1,32 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HomePage.css';
 import Card from './components/Card';
 import PetShopCard from './components/PetShopCard';
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState('tab1');
+
+    // THE FUNCTION BELOW IS FOR TESTING PURPOSES
+    // IF FOR SOME REASON YOU NEED TO RESET YOUR LOCAL STORAGE YOU CAN UNCOMMENT THE CODE BELOW
+    // AND THEN CALL THE FUNCTION WHEN A BUTTON IS CLICKED. THIS WILL CLEAR THE myPets and shopPets ON YOUR
+    // LOCAL STORAGE
+    // const handleClear = () => {
+    //   if (typeof window !== 'undefined') {
+    //     localStorage.removeItem('myPets');
+    //     localStorage.removeItem('shopPets');
+    //     // Optionally, reload the page to reset the state
+    //     window.location.reload();
+    //   };
+    // };
+  
+
+  // Initialize the my pets state --> this will be connected to local storage
   const [myPets, setMyPets] = useState([
     {
       id: 1,
       name: 'Fluffy',
-      image: '/images/1.png',
+      image: './images/1.png',
       hearts: 120,
       happiness: 80,
       food: 50,
@@ -20,7 +36,7 @@ const HomePage = () => {
     {
       id: 2,
       name: 'Buddy',
-      image: '/images/2.png',
+      image: './images/2.png',
       hearts: 200,
       happiness: 95,
       food: 70,
@@ -33,16 +49,45 @@ const HomePage = () => {
     {
       id: 3,
       name: 'Whiskers',
-      image: '/images/1.png',
+      image: './images/1.png',
     },
     {
       id: 4,
       name: 'Shadow',
-      image: '/images/2.png',
+      image: './images/1.png',
     },
   ]);
 
-  // This function is to buy a pet
+  // Load data from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedMyPets = localStorage.getItem('myPets');
+      const storedShopPets = localStorage.getItem('shopPets');
+
+      if (storedMyPets) {
+        setMyPets(JSON.parse(storedMyPets));
+      }
+      if (storedShopPets) {
+        setShopPets(JSON.parse(storedShopPets));
+      }
+    }
+  }, []);
+
+  // Update local storage when my pets changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('myPets', JSON.stringify(myPets));
+    }
+  }, [myPets]);
+
+  // Update local storage when shop pets change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('shopPets', JSON.stringify(shopPets));
+    }
+  }, [shopPets]);
+
+  // Function to buy a pet
   const handleBuyPet = (pet) => {
     // Add the pet to my pets list
     const newPet = {
@@ -63,6 +108,11 @@ const HomePage = () => {
     <div className="homepage">
       <header className="header">
         <h1>Pet World</h1>
+
+        {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES
+        <button onClick={handleClear}>
+      Clear Local Storage
+  </button> */}
       </header>
       <main className="main-content">
         <section className="main-section">
