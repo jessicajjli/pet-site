@@ -1,15 +1,19 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import './styles/Popup.css';
 
 const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
   if (!pet) return null;
 
+  const [petState, setPetState] = useState(pet);
+
   const handleIncrease = (stat) => {
+    const newValue = Math.min(petState[stat] + 10, 100);
     const updatedPet = {
-      ...pet,
-      [stat]: pet[stat] + 10, // Increase the stat by 10 (adjust as needed)
+      ...petState,
+      [stat]: newValue, 
     };
+    setPetState(updatedPet);
     onUpdatePet(updatedPet);
   };
 
@@ -19,16 +23,16 @@ const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
         <button className="close-button" onClick={onClose}>
           ×
         </button>
-        <h2>{pet.name}</h2>
-        <img src={pet.image} alt={pet.name} className="popup-image" />
+        <h2>{petState.name}</h2>
+        <img src={petState.image} alt={petState.name} className="popup-image" />
         {/* New container for stats and buttons */}
         <div className="popup-stats-buttons-container">
           <div className="popup-stats">
-            <p>❤️ Hearts: {pet.hearts}</p>
-            <p>😊 Happiness: {pet.happiness}</p>
-            <p>🍖 Food: {pet.food}</p>
-            <p>💰 Money: {pet.money}</p>
-            <p>📅 Acquired: {pet.acquiredDate}</p>
+            <p>❤️ Hearts: {petState.hearts}</p>
+            <p>😊 Happiness: {petState.happiness}</p>
+            <p>🍖 Food: {petState.food}</p>
+            <p>💰 Money: {petState.money}</p>
+            <p>📅 Acquired: {petState.acquiredDate}</p>
           </div>
           <div className="popup-buttons">
             <button onClick={() => handleIncrease('happiness')}>
@@ -40,7 +44,20 @@ const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
             <button onClick={() => handleIncrease('hearts')}>
               Increase Hearts
             </button>
-            <button onClick={() => onCollect(pet)}>Collect</button>
+            <button
+              onClick={() => {
+                onCollect(petState); // Update parent state
+                const updatedPet = {
+                  ...petState,
+                  money: 0, // Reset money after collecting
+                };
+                setPetState(updatedPet);
+                onUpdatePet(updatedPet);
+              }}
+            >
+              Collect
+            </button>
+
           </div>
         </div>
       </div>
