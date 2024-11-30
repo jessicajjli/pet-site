@@ -12,14 +12,14 @@ const HomePage = () => {
     // IF FOR SOME REASON YOU NEED TO RESET YOUR LOCAL STORAGE YOU CAN UNCOMMENT THE CODE BELOW
     // AND THEN CALL THE FUNCTION WHEN A BUTTON IS CLICKED. THIS WILL CLEAR THE myPets and shopPets ON YOUR
     // LOCAL STORAGE
-    // const handleClear = () => {
-    //   if (typeof window !== 'undefined') {
-    //     localStorage.removeItem('myPets');
-    //     localStorage.removeItem('shopPets');
-    //     // Optionally, reload the page to reset the state
-    //     window.location.reload();
-    //   };
-    // };
+    const handleClear = () => {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('myPets');
+        localStorage.removeItem('shopPets');
+        // Optionally, reload the page to reset the state
+        window.location.reload();
+      };
+    };
 
   // State for the selected pet (for the popup)
   const [selectedPet, setSelectedPet] = useState(null);
@@ -40,7 +40,7 @@ const HomePage = () => {
       id: 1,
       name: 'Fluffy',
       image: './images/1.png',
-      hearts: 120,
+      hearts: 100,
       happiness: 80,
       food: 50,
       money: 300,
@@ -50,7 +50,7 @@ const HomePage = () => {
       id: 2,
       name: 'Buddy',
       image: './images/2.png',
-      hearts: 200,
+      hearts: 100,
       happiness: 95,
       food: 70,
       money: 500,
@@ -188,8 +188,8 @@ const HomePage = () => {
           <p>Money:</p>
           <p>{money}</p>
         </div>
-        {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES
-        <button onClick={handleClear}>Clear Local Storage</button> */}
+        THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES
+        <button onClick={handleClear}>Clear Local Storage</button>
       </header>
       <main className="main-content">
         <section className="main-section">
@@ -228,6 +228,8 @@ const HomePage = () => {
                         key={pet.id}
                         pet={pet}
                         onClick={() => setSelectedPet(pet)}
+                        onCollect={handleCollect}
+                        onUpdatePet={handleUpdatePet}
                       />
                     ))}
                 </div>
