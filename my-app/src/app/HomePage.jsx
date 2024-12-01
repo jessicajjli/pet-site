@@ -149,30 +149,29 @@ const HomePage = () => {
 
   // Function to update pet stats
   const handleUpdatePet = (updatedPet) => {
-    setMyPets(
-      myPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+    setMyPets((prevPets) =>
+      prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
     );
   };
 
   // Function to handle collect action
   const handleCollect = (pet) => {
     // Increase money 
-    const earnedMoney = 50; // We need to change this I made this number up
-    const updatedPet = {
-      ...pet,
-      money: pet.money + earnedMoney,
-    };
-    setMyPets(
-      myPets.map((p) => (p.id === updatedPet.id ? updatedPet : p))
-    );
+    const earnedMoney = pet.money; 
+    if (earnedMoney > 0) {
+      setMoney((prevMoney) => prevMoney + earnedMoney);
+      const updatedPet = {
+        ...pet,
+        money: 0,
+      }; 
+      handleUpdatePet(updatedPet);
 
-    // Update money
-    setMoney(money + earnedMoney);
-
-    // Update level based on money or other criteria
-    const newLevel = Math.floor((money + earnedMoney) / 1000) + 1;
-    if (newLevel !== level) {
-      setLevel(newLevel);
+      // Update level based on new total money
+      const newTotalMoney = money + earnedMoney;
+      const newLevel = Math.floor(newTotalMoney / 1000) + 1;
+      if (newLevel !== level) {
+        setLevel(newLevel);
+      }
     }
   };
 

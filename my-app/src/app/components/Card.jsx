@@ -19,11 +19,7 @@ const Card = ({ pet, onClick, onCollect, onUpdatePet }) => {
           onClick={(e) => {
             e.stopPropagation();
             onCollect(pet); 
-            const updatedPet = {
-              ...pet,
-              money: 0, // Reset money after collecting
-            };
-            onUpdatePet(updatedPet);
+                       
           }}
         >
             💰 Collect: {pet.money}
