@@ -8,6 +8,7 @@ const PetShopCard = ({ pet, onBuy }) => {
       <img src={pet.image} alt={pet.name} className="pet-image" />
       <div className="pet-shop-info">
         <h3>{pet.name}</h3>
+        <p>💰 Price: {pet.price}</p>
         <button onClick={() => onBuy(pet)} className="buy-button">
           Buy
         </button>

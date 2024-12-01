@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import './styles/Card.css';
 
-const Card = ({ pet, onClick }) => {
+const Card = ({ pet, onClick, onCollect, onUpdatePet }) => {
   return (
     <div className="pet-card" onClick={onClick}>
       <div className="pet-card-top">
@@ -15,7 +15,15 @@ const Card = ({ pet, onClick }) => {
         </div>
       </div>
       <div className="pet-card-bottom">
-        <button className='collect-button'>💰 Collect: {pet.money}</button>
+        <button className='collect-button'
+          onClick={(e) => {
+            e.stopPropagation();
+            onCollect(pet); 
+                       
+          }}
+        >
+            💰 Collect: {pet.money}
+          </button>
         <p>Acquired: {pet.acquiredDate}</p>
       </div>
     </div>

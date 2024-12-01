@@ -12,14 +12,14 @@ const HomePage = () => {
     // IF FOR SOME REASON YOU NEED TO RESET YOUR LOCAL STORAGE YOU CAN UNCOMMENT THE CODE BELOW
     // AND THEN CALL THE FUNCTION WHEN A BUTTON IS CLICKED. THIS WILL CLEAR THE myPets and shopPets ON YOUR
     // LOCAL STORAGE
-    // const handleClear = () => {
-    //   if (typeof window !== 'undefined') {
-    //     localStorage.removeItem('myPets');
-    //     localStorage.removeItem('shopPets');
-    //     // Optionally, reload the page to reset the state
-    //     window.location.reload();
-    //   };
-    // };
+    const handleClear = () => {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('myPets');
+        localStorage.removeItem('shopPets');
+        // Optionally, reload the page to reset the state
+        window.location.reload();
+      };
+    };
 
   // State for the selected pet (for the popup)
   const [selectedPet, setSelectedPet] = useState(null);
@@ -40,7 +40,7 @@ const HomePage = () => {
       id: 1,
       name: 'Fluffy',
       image: './images/1.png',
-      hearts: 120,
+      hearts: 100,
       happiness: 80,
       food: 50,
       money: 300,
@@ -50,7 +50,7 @@ const HomePage = () => {
       id: 2,
       name: 'Buddy',
       image: './images/2.png',
-      hearts: 200,
+      hearts: 100,
       happiness: 95,
       food: 70,
       money: 500,
@@ -58,18 +58,22 @@ const HomePage = () => {
     },
   ]);
 
-  const [shopPets, setShopPets] = useState([
-    {
-      id: 3,
-      name: 'Whiskers',
-      image: './images/1.png',
-    },
-    {
-      id: 4,
-      name: 'Shadow',
-      image: './images/1.png',
-    },
-  ]);
+  const [shopPets, setShopPets] = useState(() => {
+    const basePrice = 1000;
+    const petData = [
+      { id: 3, name: 'Whiskers', image: './images/1.png' },
+      { id: 4, name: 'Shadow', image: './images/2.png' },
+      { id: 5, name: 'Luna', image: './images/3.png' }, // need new images for these pets
+      { id: 6, name: 'Max', image: './images/4.png' },
+      // Can add more pets here in the future
+    ];
+
+    return petData.map((pet, index) => ({
+      ...pet,
+      price: basePrice + index * 1000, // Each pet will cost 1000 more than the last
+    }));
+  });
+     
 
   // Load data from localStorage
   useEffect(() => {
@@ -122,19 +126,43 @@ const HomePage = () => {
     }
   }, [level]);
 
+  // Naturally decrement pet state values over time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMyPets((prevPets) =>
+        prevPets.map((pet) => {
+          // Decrease each stat by 1, ensuring they don't go below 0
+          const newHearts = Math.max(pet.hearts - 1, 0);
+          const newHappiness = Math.max(pet.happiness - 1, 0);
+          const newFood = Math.max(pet.food - 1, 0);
+  
+          return {
+            ...pet,
+            hearts: newHearts,
+            happiness: newHappiness,
+            food: newFood,
+          };
+        })
+      );
+    }, 60000); // Decrease stats every 60,000 ms (1 minute)
+  
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, []);
+
+
   // Function to buy a pet
   const handleBuyPet = (pet) => {
     // Deduct pet cost from money
-    const petCost = 500; // we need to change this 500 to a dynamic number
+    const petCost = pet.price; 
     if (money >= petCost) {
       setMoney(money - petCost);
 
       // Add the pet to my pets list
       const newPet = {
         ...pet,
-        hearts: 100,
-        happiness: 100,
-        food: 100,
+        hearts: 50,
+        happiness: 50,
+        food: 50,
         money: 0,
         acquiredDate: new Date().toISOString().split('T')[0],
       };
@@ -149,30 +177,29 @@ const HomePage = () => {
 
   // Function to update pet stats
   const handleUpdatePet = (updatedPet) => {
-    setMyPets(
-      myPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+    setMyPets((prevPets) =>
+      prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
     );
   };
 
   // Function to handle collect action
   const handleCollect = (pet) => {
     // Increase money 
-    const earnedMoney = 50; // We need to change this I made this number up
-    const updatedPet = {
-      ...pet,
-      money: pet.money + earnedMoney,
-    };
-    setMyPets(
-      myPets.map((p) => (p.id === updatedPet.id ? updatedPet : p))
-    );
+    const earnedMoney = pet.money; 
+    if (earnedMoney > 0) {
+      setMoney((prevMoney) => prevMoney + earnedMoney);
+      const updatedPet = {
+        ...pet,
+        money: 0,
+      }; 
+      handleUpdatePet(updatedPet);
 
-    // Update money
-    setMoney(money + earnedMoney);
-
-    // Update level based on money or other criteria
-    const newLevel = Math.floor((money + earnedMoney) / 1000) + 1;
-    if (newLevel !== level) {
-      setLevel(newLevel);
+      // Update level based on new total money
+      const newTotalMoney = money + earnedMoney;
+      const newLevel = Math.floor(newTotalMoney / 1000) + 1;
+      if (newLevel !== level) {
+        setLevel(newLevel);
+      }
     }
   };
 
@@ -188,8 +215,8 @@ const HomePage = () => {
           <p>Money:</p>
           <p>{money}</p>
         </div>
-        {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES
-        <button onClick={handleClear}>Clear Local Storage</button> */}
+        {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES */}
+        <button onClick={handleClear}>Clear Local Storage</button>
       </header>
       <main className="main-content">
         <section className="main-section">
@@ -228,6 +255,8 @@ const HomePage = () => {
                         key={pet.id}
                         pet={pet}
                         onClick={() => setSelectedPet(pet)}
+                        onCollect={handleCollect}
+                        onUpdatePet={handleUpdatePet}
                       />
                     ))}
                 </div>
