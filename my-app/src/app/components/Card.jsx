@@ -1,8 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import './styles/Card.css';
 
-const Card = ({ pet, onClick, onCollect, onUpdatePet }) => {
+const Card = ({ pet, onClick, onCollect, }) => {
   return (
     <div className="pet-card" onClick={onClick}>
       <div className="pet-card-top">
