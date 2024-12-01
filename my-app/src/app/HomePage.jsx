@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState, useEffect } from 'react';
 import './HomePage.css';
@@ -63,8 +64,8 @@ const HomePage = () => {
   const [shopPets, setShopPets] = useState(() => {
     const basePrice = 1000;
     const petData = [
-      { id: 3, name: 'Whiskers', image: './images/1.png' },
-      { id: 4, name: 'Shadow', image: './images/2.png' },
+      { id: 3, name: 'Whiskers', image: './images/3.png' },
+      { id: 4, name: 'Shadow', image: './images/4.png' },
       { id: 5, name: 'Luna', image: './images/1.png' }, // need new images for these pets
       { id: 6, name: 'Max', image: './images/2.png' },
       // Can add more pets here in the future
@@ -179,11 +180,41 @@ const HomePage = () => {
   };
 
   // Function to update pet stats
-  const handleUpdatePet = (updatedPet) => {
-    setMyPets((prevPets) =>
-      prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
-    );
-  };
+  // const handleUpdatePet = (updatedPet) => {
+  //   setMyPets((prevPets) =>
+  //     prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+  //   );
+  // };
+  // Function to update pet stats
+const handleUpdatePet = (updatedPet) => {
+  const { hearts, happiness, food, growth } = updatedPet;
+
+  // Check if hearts, happiness, and food are all 100
+  if (hearts === 100 && happiness === 100 && food === 100) {
+    let newGrowth;
+
+    // Determine the next growth stage
+    if (growth === 'Baby') {
+      newGrowth = 'Teen';
+    } else if (growth === 'Teen') {
+      newGrowth = 'Adult';
+    } else {
+      newGrowth = growth; // Stay in current stage if already Adult
+    }
+
+    // Update the pet with the new growth stage
+    updatedPet = {
+      ...updatedPet,
+      growth: newGrowth,
+    };
+  }
+
+  // Update the pet in the state
+  setMyPets((prevPets) =>
+    prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+  );
+};
+
 
   // Function to handle collect action
   const handleCollect = (pet) => {
