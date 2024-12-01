@@ -18,7 +18,7 @@ const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
     if (newValue === 100 && petState[stat] < 100) {
       updatedPet.money += 100; // Increase pet money by 100 when stat reaches 100
     }
-    
+
     setPetState(updatedPet);
     onUpdatePet(updatedPet);
   };
@@ -42,13 +42,13 @@ const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
           </div>
           <div className="popup-buttons">
             <button onClick={() => handleIncrease('happiness')}>
-              Increase Happiness
+              Play!
             </button>
             <button onClick={() => handleIncrease('food')}>
-              Increase Food
+              Feed!
             </button>
             <button onClick={() => handleIncrease('hearts')}>
-              Increase Hearts
+              Love!
             </button>
             <button
               onClick={() => {

@@ -58,18 +58,22 @@ const HomePage = () => {
     },
   ]);
 
-  const [shopPets, setShopPets] = useState([
-    {
-      id: 3,
-      name: 'Whiskers',
-      image: './images/1.png',
-    },
-    {
-      id: 4,
-      name: 'Shadow',
-      image: './images/1.png',
-    },
-  ]);
+  const [shopPets, setShopPets] = useState(() => {
+    const basePrice = 1000;
+    const petData = [
+      { id: 3, name: 'Whiskers', image: './images/1.png' },
+      { id: 4, name: 'Shadow', image: './images/2.png' },
+      { id: 5, name: 'Luna', image: './images/3.png' }, // need new images for these pets
+      { id: 6, name: 'Max', image: './images/4.png' },
+      // Can add more pets here in the future
+    ];
+
+    return petData.map((pet, index) => ({
+      ...pet,
+      price: basePrice + index * 1000, // Each pet will cost 1000 more than the last
+    }));
+  });
+     
 
   // Load data from localStorage
   useEffect(() => {
@@ -144,21 +148,21 @@ const HomePage = () => {
   
     return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
-  
+
 
   // Function to buy a pet
   const handleBuyPet = (pet) => {
     // Deduct pet cost from money
-    const petCost = 500; // we need to change this 500 to a dynamic number
+    const petCost = pet.price; 
     if (money >= petCost) {
       setMoney(money - petCost);
 
       // Add the pet to my pets list
       const newPet = {
         ...pet,
-        hearts: 100,
-        happiness: 100,
-        food: 100,
+        hearts: 50,
+        happiness: 50,
+        food: 50,
         money: 0,
         acquiredDate: new Date().toISOString().split('T')[0],
       };
@@ -211,7 +215,7 @@ const HomePage = () => {
           <p>Money:</p>
           <p>{money}</p>
         </div>
-        THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES
+        {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES */}
         <button onClick={handleClear}>Clear Local Storage</button>
       </header>
       <main className="main-content">
