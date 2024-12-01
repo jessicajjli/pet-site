@@ -44,6 +44,7 @@ const HomePage = () => {
       happiness: 80,
       food: 50,
       money: 300,
+      growth: 'Baby',
       acquiredDate: '2023-12-01',
     },
     {
@@ -54,6 +55,7 @@ const HomePage = () => {
       happiness: 95,
       food: 70,
       money: 500,
+      growth: 'Baby',
       acquiredDate: '2023-11-20',
     },
   ]);
@@ -164,6 +166,7 @@ const HomePage = () => {
         happiness: 50,
         food: 50,
         money: 0,
+        growth: 'Baby',
         acquiredDate: new Date().toISOString().split('T')[0],
       };
       setMyPets([...myPets, newPet]);

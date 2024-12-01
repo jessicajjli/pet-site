@@ -38,6 +38,7 @@ const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
             <p>😊 Happiness: {petState.happiness}</p>
             <p>🍖 Food: {petState.food}</p>
             <p>💰 Money: {petState.money}</p>
+            <p>🌱 Growth Stage: {pet.growthStage || 'Baby'}</p>
             <p>📅 Acquired: {petState.acquiredDate}</p>
           </div>
           <div className="popup-buttons">
