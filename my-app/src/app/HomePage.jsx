@@ -12,14 +12,14 @@ const HomePage = () => {
     // IF FOR SOME REASON YOU NEED TO RESET YOUR LOCAL STORAGE YOU CAN UNCOMMENT THE CODE BELOW
     // AND THEN CALL THE FUNCTION WHEN A BUTTON IS CLICKED. THIS WILL CLEAR THE myPets and shopPets ON YOUR
     // LOCAL STORAGE
-    const handleClear = () => {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('myPets');
-        localStorage.removeItem('shopPets');
-        // Optionally, reload the page to reset the state
-        window.location.reload();
-      };
-    };
+    // const handleClear = () => {
+    //   if (typeof window !== 'undefined') {
+    //     localStorage.removeItem('myPets');
+    //     localStorage.removeItem('shopPets');
+    //     // Optionally, reload the page to reset the state
+    //     window.location.reload();
+    //   };
+    // };
 
   // State for the selected pet (for the popup)
   const [selectedPet, setSelectedPet] = useState(null);
@@ -63,8 +63,8 @@ const HomePage = () => {
     const petData = [
       { id: 3, name: 'Whiskers', image: './images/1.png' },
       { id: 4, name: 'Shadow', image: './images/2.png' },
-      { id: 5, name: 'Luna', image: './images/3.png' }, // need new images for these pets
-      { id: 6, name: 'Max', image: './images/4.png' },
+      { id: 5, name: 'Luna', image: './images/1.png' }, // need new images for these pets
+      { id: 6, name: 'Max', image: './images/2.png' },
       // Can add more pets here in the future
     ];
 
@@ -216,7 +216,7 @@ const HomePage = () => {
           <p>{money}</p>
         </div>
         {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES */}
-        <button onClick={handleClear}>Clear Local Storage</button>
+        {/* <button onClick={handleClear}>Clear Local Storage</button> */}
       </header>
       <main className="main-content">
         <section className="main-section">
