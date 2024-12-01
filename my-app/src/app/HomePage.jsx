@@ -122,6 +122,30 @@ const HomePage = () => {
     }
   }, [level]);
 
+  // Naturally decrement pet state values over time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMyPets((prevPets) =>
+        prevPets.map((pet) => {
+          // Decrease each stat by 1, ensuring they don't go below 0
+          const newHearts = Math.max(pet.hearts - 1, 0);
+          const newHappiness = Math.max(pet.happiness - 1, 0);
+          const newFood = Math.max(pet.food - 1, 0);
+  
+          return {
+            ...pet,
+            hearts: newHearts,
+            happiness: newHappiness,
+            food: newFood,
+          };
+        })
+      );
+    }, 60000); // Decrease stats every 60,000 ms (1 minute)
+  
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, []);
+  
+
   // Function to buy a pet
   const handleBuyPet = (pet) => {
     // Deduct pet cost from money

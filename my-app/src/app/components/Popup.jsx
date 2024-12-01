@@ -9,10 +9,16 @@ const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
 
   const handleIncrease = (stat) => {
     const newValue = Math.min(petState[stat] + 10, 100);
-    const updatedPet = {
+    let updatedPet = {
       ...petState,
       [stat]: newValue, 
     };
+
+    // Check if a stat reached max value (100) and if it was below 100 before
+    if (newValue === 100 && petState[stat] < 100) {
+      updatedPet.money += 100; // Increase pet money by 100 when stat reaches 100
+    }
+    
     setPetState(updatedPet);
     onUpdatePet(updatedPet);
   };
