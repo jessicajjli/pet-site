@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import './styles/Card.css';
 
 const healthStages = ['Sick', 'Okay', 'Healthy'];
@@ -15,7 +15,20 @@ const getHealthStage = (pet) => {
   }
 };
 
-const Card = ({ pet, onClick, onCollect }) => {
+const Card = ({ pet, onClick, onCollect, onDonate }) => {
+  const [donationAmount, setDonationAmount] = useState(0);
+
+  const handleDonate = (e) => {
+    e.stopPropagation();
+    if (donationAmount > 0) {
+      onDonate(pet, donationAmount); // Call the donation handler from the parent
+      setDonationAmount(0); // Reset the input field
+      alert(`Donated ${donationAmount} coins to ${pet.name}!`);
+    } else {
+      alert('Please enter a valid donation amount.');
+    }
+  };
+
   return (
     <div className="pet-card" onClick={onClick}>
       <div className="pet-card-top">
@@ -38,6 +51,15 @@ const Card = ({ pet, onClick, onCollect }) => {
         >
           💰 Collect: {pet.money}
         </button>
+        <div className="donate-section">
+          <input
+            type="number"
+            placeholder="Donate Coins"
+            value={donationAmount}
+            onChange={(e) => setDonationAmount(Number(e.target.value))}
+          />
+          <button onClick={handleDonate}>Donate</button>
+        </div>
         <p>Acquired: {pet.acquiredDate}</p>
       </div>
     </div>
@@ -45,53 +67,3 @@ const Card = ({ pet, onClick, onCollect }) => {
 };
 
 export default Card;
-
-
-// 'use client';
-// import React, { useState, useEffect } from 'react';
-// import './styles/Card.css';
-// const growthStages = ['Baby', 'Young', 'Adult'];
-
-// // const getGrowthStage = (pet, collectedMoney) => { 
-//   // if (collectedMoney >= 300) {
-//   //    return growthStages[2]; "Adult" } else if (
-//   //     collectedMoney >= 100) { return growthStages[1]; "Young" } else {
-//   //        return growthStages[0]; "Baby" } };
-// const getGrowthStage = (pet) => { 
-//   if (pet.happiness >= 90 && pet.food >= 90) { return growthStages[2];
-//     "Adult" } else if (pet.happiness >= 80 && pet.food >= 80) { 
-//       return growthStages[1];  "Young" } else { 
-//         return growthStages[0]; "Baby" } };
-
-// const Card = ({ pet, onClick, onCollect, }) => {
-//   const [growthStage, setGrowthStage] = useState('Baby');
-//   useEffect(() => { setGrowthStage(getGrowthStage(pet)); }, [pet]); // Aissata Growth Stages
-//   return (
-//     <div className="pet-card" onClick={onClick}>
-//       <div className="pet-card-top">
-//         <img src={pet.image} alt={pet.name} className="pet-image" />
-//         <div className="pet-info">
-//           <h3>{pet.name}</h3>
-//           <p>❤️ Hearts: {pet.hearts}</p>
-//           <p>😊 Happiness: {pet.happiness}</p>
-//           <p>🍖 Food: {pet.food}</p>
-//           <p>🌱 Growth Stage: {pet.growthStage || 'Baby'}</p>
-//         </div>
-//       </div>
-//       <div className="pet-card-bottom">
-//         <button className='collect-button'
-//           onClick={(e) => {
-//             e.stopPropagation();
-//             onCollect(pet); 
-                       
-//           }}
-//         >
-//             💰 Collect: {pet.money}
-//           </button>
-//         <p>Acquired: {pet.acquiredDate}</p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Card;
