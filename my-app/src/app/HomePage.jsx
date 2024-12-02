@@ -5,6 +5,7 @@ import './HomePage.css';
 import Card from './components/Card';
 import PetShopCard from './components/PetShopCard';
 import Popup from './components/Popup';
+import InstructionsCard from './components/InstructionsCard'; 
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState('tab1');
@@ -232,6 +233,11 @@ const handleUpdatePet = (updatedPet) => {
         {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES */}
         {/* <button onClick={handleClear}>Clear Local Storage</button> */}
       </header>
+      {/* Instructions Card added here */}
+      <section className="instructions-container">
+        <InstructionsCard />
+      </section>
+
       <main className="main-content">
         <section className="main-section">
           <div className="pet-container">
@@ -291,6 +297,7 @@ const handleUpdatePet = (updatedPet) => {
                     ))}
                 </div>
               )}
+              
             </div>
           </div>
         </section>
