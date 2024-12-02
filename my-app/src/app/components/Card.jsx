@@ -15,23 +15,19 @@ const getHealthStage = (pet) => {
   }
 };
 
-<div className="donate-section">
-  <label htmlFor={`donation-${pet.id}`} className="donate-label">
-    Enter coins to donate:
-  </label>
-  <input
-    id={`donation-${pet.id}`}
-    type="number"
-    className="donate-input"
-    placeholder="Enter amount"
-    value={donationAmount}
-    onChange={(e) => setDonationAmount(Number(e.target.value))}
-  />
-  <button className="donate-button" onClick={handleDonate}>
-    Donate 💰
-  </button>
-</div>
+const Card = ({ pet, onClick, onCollect, onDonate }) => {
+  const [donationAmount, setDonationAmount] = useState(0);
 
+  const handleDonate = (e) => {
+    e.stopPropagation();
+    if (donationAmount > 0) {
+      onDonate(pet, donationAmount); // Call the donation handler from the parent
+      setDonationAmount(0); // Reset the input field
+      alert(`Donated ${donationAmount} coins to ${pet.name}!`);
+    } else {
+      alert('Please enter a valid donation amount.');
+    }
+  };
 
   return (
     <div className="pet-card" onClick={onClick}>
