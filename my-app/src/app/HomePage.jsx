@@ -189,26 +189,6 @@ const HomePage = () => {
 const handleUpdatePet = (updatedPet) => {
   const { hearts, happiness, food, growth } = updatedPet;
 
-  // Check if hearts, happiness, and food are all 100
-  if (hearts === 100 && happiness === 100 && food === 100) {
-    let newGrowth;
-
-    // Determine the next growth stage
-    if (growth === 'Baby') {
-      newGrowth = 'Teen';
-    } else if (growth === 'Teen') {
-      newGrowth = 'Adult';
-    } else {
-      newGrowth = growth; // Stay in current stage if already Adult
-    }
-
-    // Update the pet with the new growth stage
-    updatedPet = {
-      ...updatedPet,
-      growth: newGrowth,
-    };
-  }
-
   // Update the pet in the state
   setMyPets((prevPets) =>
     prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))

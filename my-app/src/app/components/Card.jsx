@@ -6,7 +6,7 @@ const healthStages = ['Sick', 'Okay', 'Healthy'];
 
 // Calculate the health stage based on pet attributes
 const getHealthStage = (pet) => {
-  if (pet.hearts >= 100 && pet.happiness >= 100 && pet.food >= 100) {
+  if (pet.hearts >= 90 && pet.happiness >= 90 && pet.food >= 90) {
     return healthStages[2]; // Healthy
   } else if (pet.hearts >= 50 && pet.happiness >= 50 && pet.food >= 50) {
     return healthStages[1]; // Okay
