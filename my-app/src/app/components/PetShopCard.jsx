@@ -4,16 +4,20 @@ import './styles/PetShopCard.css';
 
 const PetShopCard = ({ pet, onBuy }) => {
   return (
-    <div className="pet-shop-card">
-      <img src={pet.image} alt={pet.name} className="pet-image" />
+    <article className="pet-shop-card" aria-labelledby={`pet-title-${pet.id}`} aria-describedby={`pet-price-${pet.id}`}>
+      <img src={pet.image} alt={`Image of ${pet.name}`} className="pet-image" />
       <div className="pet-shop-info">
-        <h3>{pet.name}</h3>
-        <p>💰 Price: {pet.price}</p>
-        <button onClick={() => onBuy(pet)} className="buy-button">
+        <h3 id={`pet-title-${pet.id}`}>{pet.name}</h3>
+        <p id={`pet-price-${pet.id}`}>💰 Price: {pet.price}</p>
+        <button 
+          onClick={() => onBuy(pet)} 
+          className="buy-button" 
+          aria-label={`Buy ${pet.name} for ${pet.price} coins`}
+        >
           Buy
         </button>
       </div>
-    </div>
+    </article>
   );
 };
 

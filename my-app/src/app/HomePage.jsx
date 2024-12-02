@@ -1,3 +1,272 @@
+// 'use client';
+// import React, { useState, useEffect } from 'react';
+// import './HomePage.css';
+// import Card from './components/Card';
+// import PetShopCard from './components/PetShopCard';
+// import Popup from './components/Popup';
+// import InstructionsCard from './components/InstructionsCard'; 
+
+// const HomePage = () => {
+//   const [activeTab, setActiveTab] = useState('tab1');
+
+//   // THE FUNCTION BELOW IS FOR TESTING PURPOSES
+//   // IF FOR SOME REASON YOU NEED TO RESET YOUR LOCAL STORAGE YOU CAN UNCOMMENT THE CODE BELOW
+//   // AND THEN CALL THE FUNCTION WHEN A BUTTON IS CLICKED. THIS WILL CLEAR THE myPets and shopPets ON YOUR
+//   // LOCAL STORAGE
+//   // const handleClear = () => {
+//   //   if (typeof window !== 'undefined') {
+//   //     localStorage.removeItem('myPets');
+//   //     localStorage.removeItem('shopPets');
+//   //     // Optionally, reload the page to reset the state
+//   //     window.location.reload();
+//   //   };
+//   // };
+
+//   const [selectedPet, setSelectedPet] = useState(null);
+//   const [money, setMoney] = useState(10000); 
+//   const [level, setLevel] = useState(1); 
+//   const [search, setSearch] = useState('');
+  
+//   function regexstr(string) {
+//     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+//   }
+
+//   const [myPets, setMyPets] = useState([
+//     {
+//       id: 1,
+//       name: 'Fluffy',
+//       image: './images/1.png',
+//       hearts: 100,
+//       happiness: 80,
+//       food: 50,
+//       money: 300,
+//       growth: 'Baby',
+//       acquiredDate: '2023-12-01',
+//     },
+//     {
+//       id: 2,
+//       name: 'Buddy',
+//       image: './images/2.png',
+//       hearts: 100,
+//       happiness: 95,
+//       food: 70,
+//       money: 500,
+//       growth: 'Baby',
+//       acquiredDate: '2023-11-20',
+//     },
+//   ]);
+
+//   const [shopPets, setShopPets] = useState(() => {
+//     const basePrice = 1000;
+//     const petData = [
+//       { id: 3, name: 'Whiskers', image: './images/3.png' },
+//       { id: 4, name: 'Shadow', image: './images/4.png' },
+//       { id: 5, name: 'Luna', image: './images/1.png' },
+//       { id: 6, name: 'Max', image: './images/2.png' },
+//     ];
+
+//     return petData.map((pet, index) => ({
+//       ...pet,
+//       price: basePrice + index * 1000,
+//     }));
+//   });
+
+//   useEffect(() => {
+//     if (typeof window !== 'undefined') {
+//       const storedMyPets = localStorage.getItem('myPets');
+//       const storedShopPets = localStorage.getItem('shopPets');
+//       const storedMoney = localStorage.getItem('money');
+//       const storedLevel = localStorage.getItem('level');
+
+//       if (storedMyPets) {
+//         setMyPets(JSON.parse(storedMyPets));
+//       }
+//       if (storedShopPets) {
+//         setShopPets(JSON.parse(storedShopPets));
+//       }
+//       if (storedMoney) {
+//         setMoney(parseInt(storedMoney, 10));
+//       }
+//       if (storedLevel) {
+//         setLevel(parseInt(storedLevel, 10));
+//       }
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     if (typeof window !== 'undefined') {
+//       localStorage.setItem('myPets', JSON.stringify(myPets));
+//     }
+//   }, [myPets]);
+
+//   useEffect(() => {
+//     if (typeof window !== 'undefined') {
+//       localStorage.setItem('shopPets', JSON.stringify(shopPets));
+//     }
+//   }, [shopPets]);
+
+//   useEffect(() => {
+//     if (typeof window !== 'undefined') {
+//       localStorage.setItem('money', money.toString());
+//     }
+//   }, [money]);
+
+//   useEffect(() => {
+//     if (typeof window !== 'undefined') {
+//       localStorage.setItem('level', level.toString());
+//     }
+//   }, [level]);
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setMyPets((prevPets) =>
+//         prevPets.map((pet) => ({
+//           ...pet,
+//           hearts: Math.max(pet.hearts - 1, 0),
+//           happiness: Math.max(pet.happiness - 1, 0),
+//           food: Math.max(pet.food - 1, 0),
+//         }))
+//       );
+//     }, 60000);
+  
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   const handleBuyPet = (pet) => {
+//     const petCost = pet.price; 
+//     if (money >= petCost) {
+//       setMoney(money - petCost);
+//       const newPet = {
+//         ...pet,
+//         hearts: 50,
+//         happiness: 50,
+//         food: 50,
+//         money: 0,
+//         growth: 'Baby',
+//         acquiredDate: new Date().toISOString().split('T')[0],
+//       };
+//       setMyPets([...myPets, newPet]);
+//       setShopPets(shopPets.filter((shopPet) => shopPet.id !== pet.id));
+//     } else {
+//       alert('Not enough money to buy this pet.');
+//     }
+//   };
+
+//   const handleUpdatePet = (updatedPet) => {
+//     setMyPets((prevPets) =>
+//       prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+//     );
+//   };
+
+//   const handleCollect = (pet) => {
+//     const earnedMoney = pet.money; 
+//     if (earnedMoney > 0) {
+//       setMoney((prevMoney) => prevMoney + earnedMoney);
+//       handleUpdatePet({ ...pet, money: 0 });
+//       const newTotalMoney = money + earnedMoney;
+//       const newLevel = Math.floor(newTotalMoney / 1000) + 1;
+//       if (newLevel !== level) {
+//         setLevel(newLevel);
+//       }
+//     }
+//   };
+
+//   return (
+//     <div className="homepage">
+//       <header className="header" role="banner">
+//         <div className="header-left" aria-label="User level information">
+//           <p>Level:</p>
+//           <p>{level}</p>
+//         </div>
+//         <h1 className="header-title">Pet World</h1>
+//         <div className="header-right" aria-label="User money information">
+//           <p>Money:</p>
+//           <p>{money}</p>
+//         </div>
+//       </header>
+
+//       <section className="instructions-container" aria-labelledby="instructions-heading">
+//         <h2 id="instructions-heading" hidden>Instructions</h2>
+//         <InstructionsCard />
+//       </section>
+
+//       <main className="main-content" role="main">
+//         <section className="main-section">
+//           <div className="pet-container">
+//             <div className="tab-header" role="tablist" aria-label="Navigation tabs">
+//               <button
+//                 role="tab"
+//                 aria-selected={activeTab === 'tab1'}
+//                 className={activeTab === 'tab1' ? 'active-tab' : ''}
+//                 onClick={() => setActiveTab('tab1')}
+//               >
+//                 My Pets
+//               </button>
+//               <button
+//                 role="tab"
+//                 aria-selected={activeTab === 'tab2'}
+//                 className={activeTab === 'tab2' ? 'active-tab' : ''}
+//                 onClick={() => setActiveTab('tab2')}
+//               >
+//                 Pet Shop
+//               </button>
+//             </div>
+//             <div className="tab-content" role="tabpanel">
+//               <input
+//                 type="text"
+//                 placeholder="Search for a pet..."
+//                 aria-label="Search pets"
+//                 className="tab-search-bar"
+//                 value={search}
+//                 onChange={(e) => setSearch(e.target.value)}
+//               />
+//               {activeTab === 'tab1' && (
+//                 <div className="pet-cards-container" aria-labelledby="my-pets-heading">
+//                   <h2 id="my-pets-heading" hidden>My Pets</h2>
+//                   {myPets
+//                     .filter((pet) => new RegExp(regexstr(search), 'i').test(pet.name))
+//                     .map((pet) => (
+//                       <Card
+//                         key={pet.id}
+//                         pet={pet}
+//                         onClick={() => setSelectedPet(pet)}
+//                         onCollect={handleCollect}
+//                         onUpdatePet={handleUpdatePet}
+//                       />
+//                     ))}
+//                 </div>
+//               )}
+//               {activeTab === 'tab2' && (
+//                 <div className="pet-cards-container" aria-labelledby="pet-shop-heading">
+//                   <h2 id="pet-shop-heading" hidden>Pet Shop</h2>
+//                   {shopPets
+//                     .filter((pet) => new RegExp(regexstr(search), 'i').test(pet.name))
+//                     .map((pet) => (
+//                       <PetShopCard
+//                         key={pet.id}
+//                         pet={pet}
+//                         onBuy={handleBuyPet}
+//                       />
+//                     ))}
+//                 </div>
+//               )}
+//             </div>
+//           </div>
+//         </section>
+//       </main>
+
+//       <footer className="footer" role="contentinfo">
+//         <p>© 2024 Pet World. All rights reserved.</p>
+//       </footer>
+
+//       {selectedPet && (
+//         <Popup pet={selectedPet} onClose={() => setSelectedPet(null)} />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default HomePage;
 
 'use client';
 import React, { useState, useEffect } from 'react';
