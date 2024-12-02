@@ -59,7 +59,7 @@ const Card = ({ pet, onClick, onCollect, onDonate }) => {
             onChange={(e) => setDonationAmount(Number(e.target.value))}
             onClick={(e) => e.stopPropagation()}
           />
-          <button onClick={handleDonate}>Donate</button>
+          <button onClick={handleDonate}>
           Donate 💰
           </button>
         </div>
