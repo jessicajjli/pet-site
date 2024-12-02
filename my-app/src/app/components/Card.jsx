@@ -21,8 +21,8 @@ const Card = ({ pet, onClick, onCollect, onDonate }) => {
   const handleDonate = (e) => {
     e.stopPropagation();
     if (donationAmount > 0) {
-      onDonate(pet, donationAmount); // Call the donation handler from the parent
-      setDonationAmount(0); // Reset the input field
+      onDonate(pet, donationAmount); 
+      setDonationAmount(0); 
       alert(`Donated ${donationAmount} coins to ${pet.name}!`);
     } else {
       alert('Please enter a valid donation amount.');
@@ -57,8 +57,11 @@ const Card = ({ pet, onClick, onCollect, onDonate }) => {
             placeholder="Donate Coins"
             value={donationAmount}
             onChange={(e) => setDonationAmount(Number(e.target.value))}
+            onClick={(e) => e.stopPropagation()}
           />
           <button onClick={handleDonate}>Donate</button>
+          Donate 💰
+          </button>
         </div>
         <p>Acquired: {pet.acquiredDate}</p>
       </div>
