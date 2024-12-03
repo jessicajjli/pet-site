@@ -1,115 +1,116 @@
 .pet-card {
-    width: 300px;
-    border: 1px solid rgba(175, 162, 154, 1);
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: rgba(204, 84, 110, 1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    color: white;
-  }
-  
-  .pet-card-top {
-    display: flex;
-  }
-  
-  .pet-image {
-    width: 100%;
-    max-width: 120px;
-    height: 150px;
-    object-fit: contain;
-    border-radius: 8px;
-    border: 3px solid black;
-    background-color: white;
-  }
+  width: 300px;
+  border: 1px solid rgba(175, 162, 154, 1);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(204, 84, 110, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  color: white;
+}
 
-  .collect-button {
-    border-radius: 5px;
-    height: 30px;
-    width: 120px;
-    background-color: rgba(245, 218, 168, 1);
-    color: black;
-  }
-  
-  .pet-info {
-    margin-left: 20px;
-    text-align: left;
-  }
-  
-  .pet-info h3 {
-    margin: 5px 0;
-    color: white;
-  }
-  
-  .pet-info p {
-    margin: 2px 0;
-    font-size: 14px;
-    color: white;
-  }
-  
-  .pet-card-bottom {
-    margin-top: 10px;
-    border-top: 1px solid rgba(175, 162, 154, 1);
-    padding-top: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .pet-card-bottom p {
-    font-size: 14px;
-    color: white;
-  }
-  
+.pet-card-top {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between image and info */
+}
 
-  .donate-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .donate-section input {
-    width: 70%;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 8px;
-  }
-  
-  .donate-section input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-  
-  .donate-section button {
-    background-color: #28a745;
-    color: white;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 70%;
-  }
-  
-  .donate-section button:hover {
-    background-color: #218838;
-  }
-  
-  .donate-section button:active {
-    background-color: #1e7e34;
-  }
-  
-  .donate-section button:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
-  }
-  
+.pet-image {
+  width: 100%;
+  max-width: 120px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 3px solid black;
+  background-color: white;
+}
+
+.pet-info {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.pet-info h3 {
+  margin: 5px 0;
+  color: white;
+}
+
+.pet-info p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: white;
+}
+
+.pet-card-bottom {
+  margin-top: 10px;
+  border-top: 1px solid rgba(175, 162, 154, 1);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px; /* Space between elements */
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* Space between buttons and text */
+}
+
+/* Collect Button */
+.collect-button {
+  border-radius: 5px;
+  height: 30px;
+  width: 120px;
+  background-color: rgba(245, 218, 168, 1);
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.collect-button:hover {
+  background-color: rgba(175, 162, 154, 1);
+}
+
+/* Acquired Text */
+.pet-card-bottom p {
+  font-size: 14px;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+/* View Bio Button */
+.view-bio-button {
+  margin: 0;
+  background-color: rgba(245, 218, 168, 1);
+  color: black;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.view-bio-button:hover {
+  background-color: rgba(175, 162, 154, 1);
+}
+
+/* Bio Section */
+.pet-bio {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}

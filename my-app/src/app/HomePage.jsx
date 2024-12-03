@@ -317,6 +317,7 @@ const HomePage = () => {
       money: 300,
       growth: 'Baby',
       acquiredDate: '2023-12-01',
+      bio: 'Fluffy loves playing fetch and is full of energy!',
     },
     {
       id: 2,
@@ -328,16 +329,35 @@ const HomePage = () => {
       money: 500,
       growth: 'Baby',
       acquiredDate: '2023-11-20',
+      bio: 'Buddy is a loyal friend who loves cuddles.',
     },
   ]);
 
   const [shopPets, setShopPets] = useState(() => {
     const basePrice = 1000;
     const petData = [
-      { id: 3, name: 'Whiskers', image: './images/3.png' },
-      { id: 4, name: 'Shadow', image: './images/4.png' },
-      { id: 5, name: 'Luna', image: './images/1.png' }, // need new images for these pets
-      { id: 6, name: 'Max', image: './images/2.png' },
+      { id: 3,
+         name: 'Whiskers', 
+         image: './images/3.png' ,
+         bio: 'Whiskers is a playful cat who loves chasing lasers.',
+         },
+      { id: 4, 
+        name: 'Shadow', 
+        image: './images/4.png',
+        bio: 'Shadow is a quiet and mysterious companion.',
+
+       },
+      { id: 5,
+         name: 'Luna', 
+         image: './images/1.png' ,
+         bio: 'Luna loves stargazing and nighttime adventures.',
+        }, // need new images for these pets
+
+      { id: 6, 
+        name: 'Max', 
+        image: './images/2.png',
+        bio: 'Max is a cheerful dog who loves running in the park.',
+      },
       // Can add more pets here in the future
     ];
 
