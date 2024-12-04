@@ -49,5 +49,6 @@
   
   .buy-button:hover {
     background-color: rgba(15, 35, 27, 1);
+    color: white;
   }
   
