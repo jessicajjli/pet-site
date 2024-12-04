@@ -28,15 +28,23 @@
     margin: 10px 0;
     color: white;
   }
+
+  .pet-shop-info h1 {
+    margin: 5px 0;
+    color: white;
+    font-size: 30px;
+  }
   
   .buy-button {
-    background-color: rgba(21, 49, 38, 1);
-    color: white;
+    color: black;
     border: none;
     border-radius: 4px;
     padding: 8px 12px;
     cursor: pointer;
     font-size: 16px;
+    background-color: rgba(245, 218, 168, 1);
+    width: 100%;
+    font-weight: bold;
   }
   
   .buy-button:hover {

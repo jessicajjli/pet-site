@@ -32,7 +32,7 @@ const Card = ({ pet, onClick, onCollect }) => {
           className="pet-image"
         />
         <div className="pet-info">
-          <h2>{pet.name}</h2>
+          <h1>{pet.name}</h1>
           <p>❤️ Hearts: <span aria-live="polite">{pet.hearts}</span></p>
           <p>😊 Happiness: <span aria-live="polite">{pet.happiness}</span></p>
           <p>🍖 Food: <span aria-live="polite">{pet.food}</span></p>

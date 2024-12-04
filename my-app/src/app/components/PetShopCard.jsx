@@ -7,7 +7,7 @@ const PetShopCard = ({ pet, onBuy }) => {
     <article className="pet-shop-card" aria-labelledby={`pet-title-${pet.id}`} aria-describedby={`pet-price-${pet.id}`}>
       <img src={pet.image} alt={`Image of ${pet.name}`} className="pet-image" />
       <div className="pet-shop-info">
-        <h3 id={`pet-title-${pet.id}`}>{pet.name}</h3>
+        <h1 id={`pet-title-${pet.id}`}>{pet.name}</h1>
         <p id={`pet-price-${pet.id}`}>💰 Price: {pet.price}</p>
         <button 
           onClick={() => onBuy(pet)} 
