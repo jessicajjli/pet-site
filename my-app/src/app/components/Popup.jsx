@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState } from 'react';
 import './styles/Popup.css';
@@ -65,9 +64,21 @@ const Popup = ({ pet, onClose, onUpdatePet, onCollect }) => {
           className="popup-stats-buttons-container"
         >
           <section className="popup-stats" aria-label="Pet statistics">
-            <p>❤️ Hearts: {petState.hearts}</p>
-            <p>😊 Happiness: {petState.happiness}</p>
-            <p>🍖 Food: {petState.food}</p>
+            <div className="stat">
+              <label htmlFor={`hearts-progress-${petState.id}`}>❤️ Hearts</label>
+              <progress id={`hearts-progress-${petState.id}`} value={petState.hearts} max="100"></progress>
+              <span>{petState.hearts}%</span>
+            </div>
+            <div className="stat">
+              <label htmlFor={`happiness-progress-${petState.id}`}>😊 Happiness</label>
+              <progress id={`happiness-progress-${petState.id}`} value={petState.happiness} max="100"></progress>
+              <span>{petState.happiness}%</span>
+            </div>
+            <div className="stat">
+              <label htmlFor={`food-progress-${petState.id}`}>🍖 Food</label>
+              <progress id={`food-progress-${petState.id}`} value={petState.food} max="100"></progress>
+              <span>{petState.food}%</span>
+            </div>
             <p>💰 Money: {petState.money}</p>
             <p>🌱 Health: {getHealthStage(petState)}</p> {/* Health Stage */}
             <p>📅 Acquired: {petState.acquiredDate}</p>
