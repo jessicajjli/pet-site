@@ -67,10 +67,10 @@ const HomePage = () => {
   const [shopPets, setShopPets] = useState(() => {
     const basePrice = 1000;
     const petData = [
-      { id: 3, name: 'Whiskers', image: './images/3.png', bio: 'Whiskers is a playful cat who loves chasing lasers.' },
+      { id: 3, name: 'Whiskers', image: './images/3.png', bio: 'Whiskers is a playful cow who loves eating grass.' },
       { id: 4, name: 'Shadow', image: './images/4.png', bio: 'Shadow is a quiet and mysterious companion.' },
-      { id: 5, name: 'Luna', image: './images/5.png', bio: 'Luna loves stargazing and nighttime adventures.' },
-      { id: 6, name: 'Max', image: './images/6.png', bio: 'Max is a cheerful dog who loves running in the park.' },
+      { id: 5, name: 'Luna', image: './images/5.png', bio: 'Luna loves stargazing and eating sesame seeds.' },
+      { id: 6, name: 'Max', image: './images/6.png', bio: 'Max is a cheerful horse who loves running in the park.' },
     ];
 
     return petData.map((pet, index) => ({
