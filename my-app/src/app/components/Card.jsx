@@ -6,12 +6,16 @@ const healthStages = ['Sick', 'Okay', 'Healthy'];
 
 // Calculate the health stage based on pet attributes
 const getHealthStage = (pet) => {
-  if (pet.hearts >= 90 && pet.happiness >= 90 && pet.food >= 90) {
-    return healthStages[2]; // Healthy
-  } else if (pet.hearts >= 50 && pet.happiness >= 50 && pet.food >= 50) {
+  // Calculate the average of the three stats (food, happiness, hearts)
+  const average = (pet.food + pet.happiness + pet.hearts) / 3;
+
+  // Determine health stage based on the average value
+  if (average <= 40) {
+    return healthStages[0]; // Sick
+  } else if (average <= 70) {
     return healthStages[1]; // Okay
   } else {
-    return healthStages[0]; // Sick
+    return healthStages[2]; // Healthy
   }
 };
 
@@ -34,7 +38,7 @@ const Card = ({ pet, onClick, onCollect }) => {
         />
         <div className="pet-info">
           <h2>{pet.name}</h2>
-          <p>🌱 Health: 
+          <p>🌱 Health:
             <span aria-live="polite" aria-label={`Health stage is ${getHealthStage(pet)}`}>
               {getHealthStage(pet)}
             </span>
