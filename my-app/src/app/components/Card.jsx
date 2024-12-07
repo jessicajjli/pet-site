@@ -16,11 +16,12 @@ const getHealthStage = (pet) => {
 };
 
 const Card = ({ pet, onClick, onCollect }) => {
-  const [showBio, setShowBio] = useState(false); // State to toggle the BIO
+  const [donationAmount, setDonationAmount] = useState(0);
+  const [bioVisible, setBioVisible] = useState(false); // State to toggle bio visibility
 
-  const toggleBio = (e) => {
-    e.stopPropagation();
-    setShowBio((prev) => !prev); // Toggle the BIO visibility
+  const toggleBioVisibility = (e) => {
+    e.stopPropagation(); // Prevent the card's click handler from firing when the button is clicked
+    setBioVisible(!bioVisible); // Toggle the visibility of the bio
   };
 
   return (
@@ -32,23 +33,52 @@ const Card = ({ pet, onClick, onCollect }) => {
           className="pet-image"
         />
         <div className="pet-info">
-          <h1>{pet.name}</h1>
-          <p>❤️ Hearts: <span aria-live="polite">{pet.hearts}</span></p>
-          <p>😊 Happiness: <span aria-live="polite">{pet.happiness}</span></p>
-          <p>🍖 Food: <span aria-live="polite">{pet.food}</span></p>
-          <p>
-            🌱 Health: 
+          <h2>{pet.name}</h2>
+          <p>🌱 Health: 
             <span aria-live="polite" aria-label={`Health stage is ${getHealthStage(pet)}`}>
               {getHealthStage(pet)}
             </span>
           </p>
         </div>
       </section>
+
+      {/* Pet Stats with Progress Bars */}
+      <section className="pet-stats">
+        <div className="stat">
+          <label htmlFor={`hearts-progress-${pet.id}`}>❤️ Hearts</label>
+          <progress id={`hearts-progress-${pet.id}`} value={pet.hearts} max="100"></progress>
+          <span>{pet.hearts}%</span>
+        </div>
+        <div className="stat">
+          <label htmlFor={`happiness-progress-${pet.id}`}>😊 Happiness</label>
+          <progress id={`happiness-progress-${pet.id}`} value={pet.happiness} max="100"></progress>
+          <span>{pet.happiness}%</span>
+        </div>
+        <div className="stat">
+          <label htmlFor={`food-progress-${pet.id}`}>🍖 Food</label>
+          <progress id={`food-progress-${pet.id}`} value={pet.food} max="100"></progress>
+          <span>{pet.food}%</span>
+        </div>
+      </section>
+
+      {/* Bio Section (Initially Hidden) */}
+      <section className="pet-bio">
+        <button 
+          className="view-bio-button"
+          onClick={toggleBioVisibility}
+          aria-label={`Toggle bio visibility for ${pet.name}`}
+        >
+          {bioVisible ? 'Hide Bio' : 'Read Bio'}
+        </button>
+        
+        {bioVisible && <p>{pet.bio}</p>} {/* Bio content displayed when bioVisible is true */}
+      </section>
+
       <section className="pet-card-bottom">
         <button
           className="collect-button"
           onClick={(e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Prevent the click event from propagating to the card
             onCollect(pet);
           }}
           aria-label={`Collect ${pet.money} coins from ${pet.name}`}
@@ -56,19 +86,11 @@ const Card = ({ pet, onClick, onCollect }) => {
           💰 Collect: {pet.money}
         </button>
         <p>Acquired: <time dateTime={pet.acquiredDate}>{pet.acquiredDate}</time></p>
-        {/* Toggle BIO Button */}
-        <button className="view-bio-button" onClick={toggleBio}>
-          {showBio ? 'Hide Bio' : 'View Bio'}
-        </button>
       </section>
-      {/* BIO Section */}
-      {showBio && (
-        <section className="pet-bio">
-          <p>{pet.bio || 'This pet has no bio yet!'}</p>
-        </section>
-      )}
     </article>
   );
 };
 
 export default Card;
+
+
