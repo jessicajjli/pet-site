@@ -4,25 +4,25 @@ import './HomePage.css';
 import Card from './components/Card';
 import PetShopCard from './components/PetShopCard';
 import Popup from './components/Popup';
-import InstructionsCard from './components/InstructionsCard'; 
+import InstructionsCard from './components/InstructionsCard';
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState('tab1');
 
-    // THE FUNCTION BELOW IS FOR TESTING PURPOSES
-    // IF FOR SOME REASON YOU NEED TO RESET YOUR LOCAL STORAGE YOU CAN UNCOMMENT THE CODE BELOW
-    // AND THEN CALL THE FUNCTION WHEN A BUTTON IS CLICKED. THIS WILL CLEAR THE myPets and shopPets ON YOUR
-    // LOCAL STORAGE
-    // const handleClear = () => {
-    //   if (typeof window !== 'undefined') {
-    //     localStorage.removeItem('myPets');
-    //     localStorage.removeItem('shopPets');
-    //     localStorage.removeItem('money');
-    //     localStorage.removeItem('level');
-    //     // Optionally, reload the page to reset the state
-    //     window.location.reload();
-    //   };
-    // };
+  // THE FUNCTION BELOW IS FOR TESTING PURPOSES
+  // IF FOR SOME REASON YOU NEED TO RESET YOUR LOCAL STORAGE YOU CAN UNCOMMENT THE CODE BELOW
+  // AND THEN CALL THE FUNCTION WHEN A BUTTON IS CLICKED. THIS WILL CLEAR THE myPets and shopPets ON YOUR
+  // LOCAL STORAGE
+  // const handleClear = () => {
+  //   if (typeof window !== 'undefined') {
+  //     localStorage.removeItem('myPets');
+  //     localStorage.removeItem('shopPets');
+  //     localStorage.removeItem('money');
+  //     localStorage.removeItem('level');
+  //     // Optionally, reload the page to reset the state
+  //     window.location.reload();
+  //   };
+  // };
 
   // State for the selected pet (for the popup)
   const [selectedPet, setSelectedPet] = useState(null);
@@ -35,7 +35,6 @@ const HomePage = () => {
   function regexstr(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
-
 
   // Initialize the my pets state --> this will be connected to local storage
   const [myPets, setMyPets] = useState([
@@ -68,27 +67,10 @@ const HomePage = () => {
   const [shopPets, setShopPets] = useState(() => {
     const basePrice = 1000;
     const petData = [
-      { id: 3,
-         name: 'Whiskers', 
-         image: './images/3.png' ,
-         bio: 'Whiskers is a playful cat who loves chasing lasers.',
-         },
-      { id: 4, 
-        name: 'Shadow', 
-        image: './images/4.png',
-        bio: 'Shadow is a quiet and mysterious companion.',
-
-       },
-      { id: 5,
-         name: 'Luna', 
-         image: './images/5.png' ,
-         bio: 'Luna loves stargazing and nighttime adventures.',
-        },
-      { id: 6, 
-        name: 'Max', 
-        image: './images/6.png',
-        bio: 'Max is a cheerful dog who loves running in the park.',
-      },
+      { id: 3, name: 'Whiskers', image: './images/3.png', bio: 'Whiskers is a playful cat who loves chasing lasers.' },
+      { id: 4, name: 'Shadow', image: './images/4.png', bio: 'Shadow is a quiet and mysterious companion.' },
+      { id: 5, name: 'Luna', image: './images/5.png', bio: 'Luna loves stargazing and nighttime adventures.' },
+      { id: 6, name: 'Max', image: './images/6.png', bio: 'Max is a cheerful dog who loves running in the park.' },
     ];
 
     return petData.map((pet, index) => ({
@@ -96,7 +78,9 @@ const HomePage = () => {
       price: basePrice + index * 1000, // Each pet will cost 1000 more than the last
     }));
   });
-     
+
+  // State to track if the instructions card has been dismissed
+  const [isInstructionsDismissed, setIsInstructionsDismissed] = useState(false);
 
   // Load data from localStorage
   useEffect(() => {
@@ -158,7 +142,7 @@ const HomePage = () => {
           const newHearts = Math.max(pet.hearts - 1, 0);
           const newHappiness = Math.max(pet.happiness - 1, 0);
           const newFood = Math.max(pet.food - 1, 0);
-  
+
           return {
             ...pet,
             hearts: newHearts,
@@ -168,19 +152,16 @@ const HomePage = () => {
         })
       );
     }, 60000); // Decrease stats every 60,000 ms (1 minute)
-  
+
     return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
 
-
   // Function to buy a pet
   const handleBuyPet = (pet) => {
-    // Deduct pet cost from money
     const petCost = pet.price; 
     if (money >= petCost) {
       setMoney(money - petCost);
 
-      // Add the pet to my pets list
       const newPet = {
         ...pet,
         hearts: 50,
@@ -192,7 +173,6 @@ const HomePage = () => {
       };
       setMyPets([...myPets, newPet]);
 
-      // Removing the pet from the shop
       setShopPets(shopPets.filter((shopPet) => shopPet.id !== pet.id));
     } else {
       alert('Not enough money to buy this pet.');
@@ -200,41 +180,34 @@ const HomePage = () => {
   };
 
   // Function to update pet stats
-  // const handleUpdatePet = (updatedPet) => {
-  //   setMyPets((prevPets) =>
-  //     prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
-  //   );
-  // };
-  // Function to update pet stats
-const handleUpdatePet = (updatedPet) => {
-  const { hearts, happiness, food, growth } = updatedPet;
+  const handleUpdatePet = (updatedPet) => {
+    const { hearts, happiness, food, growth } = updatedPet;
 
-  // Update the pet in the state
-  setMyPets((prevPets) =>
-    prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
-  );
-};
-
+    setMyPets((prevPets) =>
+      prevPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+    );
+  };
 
   // Function to handle collect action
   const handleCollect = (pet) => {
-    // Increase money 
     const earnedMoney = pet.money; 
     if (earnedMoney > 0) {
       setMoney((prevMoney) => prevMoney + earnedMoney);
-      const updatedPet = {
-        ...pet,
-        money: 0,
-      }; 
+      const updatedPet = { ...pet, money: 0 };
       handleUpdatePet(updatedPet);
 
-      // Update level based on new total money
       const newTotalMoney = money + earnedMoney;
       const newLevel = Math.floor(newTotalMoney / 1000) + 1;
       if (newLevel !== level) {
         setLevel(newLevel);
       }
     }
+  };
+
+  // Handle dismissing the instructions card
+  const handleDismissInstructions = () => {
+    setIsInstructionsDismissed(true);
+    localStorage.setItem('instructionsDismissed', 'true');
   };
 
   return (
@@ -252,10 +225,13 @@ const handleUpdatePet = (updatedPet) => {
         {/* THIS IS TO CLEAR YOUR LOCAL STORAGE FOR TESTING PURPOSES */}
         {/* <button onClick={handleClear}>Clear Local Storage</button> */}
       </header>
-      {/* Instructions Card added here */}
-      <section className="instructions-container">
-        <InstructionsCard />
-      </section>
+
+      {/* Show instructions card if not dismissed */}
+      {!isInstructionsDismissed && (
+        <section className="instructions-container">
+          <InstructionsCard onDismiss={handleDismissInstructions} />
+        </section>
+      )}
 
       <main className="main-content">
         <section className="main-section">
@@ -275,13 +251,13 @@ const handleUpdatePet = (updatedPet) => {
               </button>
             </div>
             <div className="tab-content">
-            <input
-              type="text"
-              placeholder="Search for a pet..."
-              className="tab-search-bar"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+              <input
+                type="text"
+                placeholder="Search for a pet..."
+                className="tab-search-bar"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
               {activeTab === 'tab1' && (
                 <div className="pet-cards-container">
                   {myPets
@@ -316,14 +292,15 @@ const handleUpdatePet = (updatedPet) => {
                     ))}
                 </div>
               )}
-              
             </div>
           </div>
         </section>
       </main>
+
       <footer className="footer">
         <p>© 2024 Pet World. All rights reserved.</p>
       </footer>
+
       {selectedPet && (
         <Popup
           pet={selectedPet}

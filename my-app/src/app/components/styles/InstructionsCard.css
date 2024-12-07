@@ -55,3 +55,17 @@
       font-size: 14px;
     }
   }
+
+  .dismiss-btn {
+    position: absolute;
+    top: 105px;
+    right: 250px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dismiss-btn:hover {
+    color: red;
+  }
